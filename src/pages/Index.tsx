@@ -76,7 +76,6 @@ const Index = () => {
     if (cycleDay === 14) return 'Ovulation';
     if (cycleDay >= 15 && cycleDay <= 28) return 'Luteal';
 
-    return 'Unknown';
     return 'Follicular'; // Default fallback
   };
 
