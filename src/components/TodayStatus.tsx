@@ -82,7 +82,7 @@ const TodayStatus = ({ currentDay, cycleHealth, currentPhase, onAddNote }) => {
                 onChange={(e) => setNote(e.target.value)}
                 placeholder="Add symptoms, mood, or any notes..."
                 className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9b5f42] text-[#5c3b28] text-sm resize-none"
-                rows="3"
+                rows={3}
               />
               <div className="flex space-x-2">
                 <button
