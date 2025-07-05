@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { format, addDays, isSameDay, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth } from 'date-fns';
+import { format, addDays, isSameDay, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, differenceInDays } from 'date-fns';
 import { ChevronLeft, ChevronRight, Droplet, Leaf, Sun, Moon } from 'lucide-react';
 
 const CycleCalendar = ({ 
@@ -24,6 +24,15 @@ const CycleCalendar = ({
       if (daysSinceStart === 14) return 'ovulation';
     }
     
+    // Check for next month's predicted period
+    if (periodStartDate) {
+      const nextPeriodStart = addDays(periodStartDate, 28);
+      if (isSameMonth(date, nextPeriodStart)) {
+        const daysSinceNextStart = Math.floor((date - nextPeriodStart) / (1000 * 60 * 60 * 24));
+        if (daysSinceNextStart >= 0 && daysSinceNextStart <= 6) return 'next-period';
+      }
+    }
+    
     if (previousPeriodDate && !isSameMonth(date, currentMonth) && 
         isSameMonth(date, previousPeriodDate)) {
       const daysSinceStart = Math.floor((date - previousPeriodDate) / (1000 * 60 * 60 * 24));
@@ -41,6 +50,8 @@ const CycleCalendar = ({
         return 'bg-green-100 border-green-200 text-green-700';
       case 'ovulation':
         return 'bg-blue-100 border-blue-200 text-blue-700';
+      case 'next-period':
+        return 'bg-pink-100 border-pink-200 text-pink-700';
       case 'previous-period':
         return 'bg-yellow-100 border-yellow-200 text-yellow-700';
       default:
@@ -56,6 +67,8 @@ const CycleCalendar = ({
         return <Leaf className="w-3 h-3" />;
       case 'ovulation':
         return <Sun className="w-3 h-3" />;
+      case 'next-period':
+        return <Droplet className="w-3 h-3" />;
       case 'previous-period':
         return <Moon className="w-3 h-3" />;
       default:
@@ -72,7 +85,7 @@ const CycleCalendar = ({
   };
 
   return (
-    <div className="bg-[#fff7f2] rounded-2xl p-6 shadow-sm border border-orange-100">
+    <div className="bg-[#fff7f2] rounded-2xl p-6 shadow-sm border border-orange-100 w-full">
       {/* Calendar Header */}
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-xl font-semibold text-[#5c3b28]">
@@ -111,6 +124,10 @@ const CycleCalendar = ({
         <div className="flex items-center space-x-1 bg-blue-100 px-2 py-1 rounded-full">
           <Sun className="w-3 h-3 text-blue-600" />
           <span className="text-blue-700">Ovulation</span>
+        </div>
+        <div className="flex items-center space-x-1 bg-pink-100 px-2 py-1 rounded-full">
+          <Droplet className="w-3 h-3 text-pink-500" />
+          <span className="text-pink-700">Next Period</span>
         </div>
       </div>
 
