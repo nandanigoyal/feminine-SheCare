@@ -63,19 +63,27 @@ const Index = () => {
     if (!periodStartDate) return 'Unknown';
     const today = new Date();
     const daysSinceStart = differenceInDays(today, periodStartDate);
+
+    if (daysSinceStart >= 0 && daysSinceStart <= 6) return 'Menstrual';
+    if (daysSinceStart >= 7 && daysSinceStart <= 13) return 'Follicular';
+    if (daysSinceStart === 14) return 'Ovulation';
+    if (daysSinceStart >= 15 && daysSinceStart <= 28) return 'Luteal';
+  
     const cycleDay = (daysSinceStart % 28) + 1;
 
     if (cycleDay >= 1 && cycleDay <= 7) return 'Menstrual';
     if (cycleDay >= 8 && cycleDay <= 13) return 'Follicular';
     if (cycleDay === 14) return 'Ovulation';
     if (cycleDay >= 15 && cycleDay <= 28) return 'Luteal';
-    
+
+    return 'Unknown';
     return 'Follicular'; // Default fallback
   };
 
   const getCycleDay = () => {
     if (!periodStartDate) return 0;
     const today = new Date();
+     return differenceInDays(today, periodStartDate) + 1;
     const daysSinceStart = differenceInDays(today, periodStartDate);
     return (daysSinceStart % 28) + 1;
   };
